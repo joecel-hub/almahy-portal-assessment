@@ -4,7 +4,7 @@ An internal admin dashboard and management portal for a legal and advisory pract
 
 > **Technical assessment project.** Not affiliated with or endorsed by Almahy. All names, clients, cases and figures are fictional demo data.
 
-- **Live URL:** _added after first deployment_
+- **Live URL:** https://almahy-portal-assessment.vercel.app
 - **Stack:** Next.js 16 (App Router) · React 19 · TypeScript (strict) · Tailwind CSS 4 · Radix UI · TanStack Query · React Hook Form + Zod · Recharts · Drizzle ORM + Neon Postgres · Vitest + Testing Library
 
 ---
