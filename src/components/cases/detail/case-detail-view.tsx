@@ -278,7 +278,9 @@ export function CaseDetailView({ id, assignees }: { id: number; assignees: Assig
                   )}
                 </span>
                 <div className="min-w-0">
-                  <p className="truncate font-medium">{client.name}</p>
+                  <Link href={`/clients/${client.id}`} className="block truncate font-medium hover:underline">
+                    {client.name}
+                  </Link>
                   <p className="text-xs text-muted-foreground">{CLIENT_TYPE_LABELS[client.type]}</p>
                 </div>
               </div>
