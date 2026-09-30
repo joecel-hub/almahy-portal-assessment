@@ -18,8 +18,9 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
   return <div className={cn("flex flex-col gap-1 px-5", className)} {...props} />;
 }
 
-function CardTitle({ className, ...props }: React.ComponentProps<"h3">) {
-  return <h3 className={cn("text-base font-semibold leading-none", className)} {...props} />;
+/** A styled div: pages place their own <h1>/<h2> inside, so heading levels stay correct. */
+function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
+  return <div className={cn("text-base font-semibold leading-none", className)} {...props} />;
 }
 
 function CardDescription({ className, ...props }: React.ComponentProps<"p">) {
