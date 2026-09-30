@@ -30,11 +30,13 @@ function errorResponse(error: unknown) {
     return NextResponse.json(body, { status: error.status });
   }
   if (error instanceof z.ZodError) {
+    const { formErrors, fieldErrors } = z.flattenError(error);
     const body: ApiErrorBody = {
       error: {
         code: "validation_error",
-        message: "Some fields are invalid",
-        fields: z.flattenError(error).fieldErrors as Record<string, string[]>,
+        // Object-level problems (e.g. an unknown key) have no field; surface them in the message.
+        message: formErrors[0] ?? "Some fields are invalid",
+        fields: fieldErrors as Record<string, string[]>,
       },
     };
     return NextResponse.json(body, { status: 400 });

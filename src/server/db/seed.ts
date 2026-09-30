@@ -20,6 +20,7 @@ import {
   CONSULTATION_MODES,
   DOCUMENT_KINDS,
   PRACTICE_AREAS,
+  CASE_STATUS_LABELS,
   type CaseStatus,
   type PracticeArea,
 } from "../../lib/domain";
@@ -55,6 +56,28 @@ const TITLE_TEMPLATES: Record<PracticeArea, string[]> = {
   family: ["Inheritance distribution", "Custody arrangement", "Marriage contract review", "Estate planning", "Guardianship application"],
   intellectual_property: ["Trademark registration", "Copyright infringement", "Licensing agreement", "Patent filing support", "Brand dispute"],
 };
+
+const NOTES = [
+  "Client call: agreed to share the signed engagement letter by end of week.",
+  "Reviewed the draft agreement; flagged the limitation-of-liability clause.",
+  "Requested certified copies of the commercial registration.",
+  "Opposing counsel proposed a settlement meeting; awaiting client instructions.",
+  "Hearing date confirmed with the court registry.",
+  "Sent the first draft to the client for comments.",
+  "Client provided additional evidence; added to the case file.",
+  "Internal review with the partner; strategy approved.",
+  "Invoice issued for the current billing period.",
+  "Translation of supporting documents requested.",
+  "Follow-up email sent regarding outstanding documents.",
+  "Research memo on applicable precedents completed.",
+];
+const DESCRIPTIONS = [
+  "The client seeks advice and representation on this matter. Initial documents have been received and a preliminary assessment is under way.",
+  "Engagement covers review of the relevant agreements, advice on the client's position and, if needed, negotiation with the other party.",
+  "Matter opened following an initial consultation. Scope, fees and timeline were agreed in the engagement letter.",
+  "The firm will prepare the required filings, coordinate with the relevant authority and keep the client informed of each step.",
+  "Advisory engagement: identify risks, recommend options and draft the necessary documentation for the client's approval.",
+];
 
 const pick = <T,>(items: readonly T[]) => faker.helpers.arrayElement(items);
 const fullName = () => `${pick(FIRST_NAMES)} ${pick(LAST_NAMES)}`;
@@ -137,7 +160,7 @@ async function main() {
     return {
       ref: `ALM-${openedAt.getFullYear()}-${String(i + 1).padStart(4, "0")}`,
       title: `${pick(TITLE_TEMPLATES[practiceArea])} – ${client.name}`,
-      description: faker.lorem.sentences({ min: 2, max: 4 }),
+      description: pick(DESCRIPTIONS),
       clientId: client.id,
       practiceArea,
       status,
@@ -195,13 +218,13 @@ async function main() {
 
     for (let n = faker.number.int({ min: 0, max: 2 }); n > 0; n--) {
       const at = between();
-      activityRows.push({ caseId: c.id, actorId: actor(), type: "note", message: faker.lorem.sentence(), createdAt: iso(at) });
+      activityRows.push({ caseId: c.id, actorId: actor(), type: "note", message: pick(NOTES), createdAt: iso(at) });
     }
 
     if (c.status !== "intake") {
       activityRows.push({
         caseId: c.id, actorId: actor(), type: "status_changed",
-        message: `Status changed to ${c.status.replace("_", " ")}`,
+        message: `Status changed to ${CASE_STATUS_LABELS[c.status]}`,
         meta: { to: c.status }, createdAt: c.closedAt ?? iso(between()),
       });
     }
