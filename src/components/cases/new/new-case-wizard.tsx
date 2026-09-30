@@ -130,6 +130,23 @@ export function NewCaseWizard({ clients, assignees }: Props) {
     return () => clearTimeout(timer);
   }, [values, step, created, formState.isDirty, session.userId, form]);
 
+  // --- Once a field shows an error, re-check it on every keystroke so the
+  // message clears while the user types. Otherwise it clears on blur, i.e.
+  // when the user taps Continue: the layout jumps under their finger and the
+  // tap is lost (reproduced on a 320px phone, where error messages wrap).
+  const { subscribe, getFieldState } = form;
+  useEffect(
+    () =>
+      subscribe({
+        formState: { values: true },
+        callback: ({ name, type }) => {
+          const field = name as FieldPath<WizardValues> | undefined;
+          if (type === "change" && field && getFieldState(field).invalid) void trigger(field);
+        },
+      }),
+    [subscribe, getFieldState, trigger],
+  );
+
   // --- Move focus to the step heading when the step changes (screen readers
   // announce the new step; keyboard users start at the top of it).
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -227,22 +244,24 @@ export function NewCaseWizard({ clients, assignees }: Props) {
   const e = errors;
 
   return (
+    // min-w-0 on both grid children: without it a grid item never shrinks
+    // below its content, and the step bar pushed the page wider than a phone.
     <div className="grid gap-6 lg:grid-cols-[220px_1fr]">
-      {/* Step indicator */}
-      <nav aria-label="Form progress">
-        <ol className="flex gap-2 overflow-x-auto lg:flex-col lg:gap-1">
+      {/* Step indicator: numbers only on phones (plus the current step's name), full names from sm up. */}
+      <nav aria-label="Form progress" className="min-w-0">
+        <ol className="flex gap-1 sm:gap-2 lg:flex-col lg:gap-1">
           {STEPS.map((s, i) => {
             const done = i < step;
             const current = i === step;
             return (
-              <li key={s.key} className="shrink-0">
+              <li key={s.key} className={cn("min-w-0", current ? "flex-1 sm:flex-none" : "shrink-0")}>
                 <button
                   type="button"
                   onClick={() => done && setStep(i)}
                   disabled={!done}
                   aria-current={current ? "step" : undefined}
                   className={cn(
-                    "flex w-full items-center gap-3 rounded-md px-3 py-2 text-left text-sm outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50",
+                    "flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-sm outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 sm:gap-3 sm:px-3",
                     current && "bg-accent font-medium text-accent-foreground",
                     done && "cursor-pointer hover:bg-muted",
                     !done && !current && "text-muted-foreground",
@@ -257,7 +276,8 @@ export function NewCaseWizard({ clients, assignees }: Props) {
                   >
                     {done ? <Check className="size-3.5" aria-hidden="true" /> : i + 1}
                   </span>
-                  <span>
+                  {/* Screen readers always get the name; sighted phone users see it for the current step only. */}
+                  <span className={cn("truncate", !current && "sr-only sm:not-sr-only")}>
                     {s.title}
                     {done && <span className="sr-only"> (completed)</span>}
                   </span>
@@ -277,7 +297,7 @@ export function NewCaseWizard({ clients, assignees }: Props) {
         </p>
       </nav>
 
-      <Card>
+      <Card className="min-w-0">
         <CardContent>
           {restored && step < LAST_STEP + 1 && (
             <div className="mb-5 flex flex-wrap items-center justify-between gap-2 rounded-md border border-info/30 bg-info/10 px-3 py-2 text-sm">
