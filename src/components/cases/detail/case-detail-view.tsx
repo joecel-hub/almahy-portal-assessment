@@ -309,7 +309,7 @@ export function CaseDetailView({ id, assignees }: { id: number; assignees: Assig
                   {client.city}
                 </li>
                 {client.crNumber && (
-                  <li className="text-xs text-muted-foreground">CR number: {client.crNumber}</li>
+                  <li className="text-xs text-muted-foreground">Trade licence no. {client.crNumber}</li>
                 )}
               </ul>
             </CardContent>

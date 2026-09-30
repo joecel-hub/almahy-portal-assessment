@@ -171,9 +171,9 @@ export function DetailsForm({ detail, save, onDone }: { detail: CaseDetail; save
 /* ------------------------------------------------------------------------ */
 
 const FEE_LABEL: Record<FeeType, string> = {
-  fixed: "Total fee (SAR)",
-  hourly: "Hourly rate (SAR)",
-  retainer: "Monthly retainer (SAR)",
+  fixed: "Total fee (AED)",
+  hourly: "Hourly rate (AED)",
+  retainer: "Monthly retainer (AED)",
 };
 
 export function EngagementForm({
@@ -248,7 +248,7 @@ export function EngagementForm({
             ))}
           </NativeSelect>
         </FormField>
-        <FormField id="feeAmount" label={FEE_LABEL[feeType] ?? "Fee (SAR)"} required error={errors.feeAmount?.message}>
+        <FormField id="feeAmount" label={FEE_LABEL[feeType] ?? "Fee (AED)"} required error={errors.feeAmount?.message}>
           <Input
             id="feeAmount"
             type="number"

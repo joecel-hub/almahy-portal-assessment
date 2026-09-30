@@ -58,7 +58,7 @@ export const clients = pgTable(
     name: text().notNull(),
     /** Company only: main contact at the company. */
     contactName: text("contact_name"),
-    /** Company only: commercial registration number. */
+    /** Company only: trade licence number (column name kept from the first schema). */
     crNumber: text("cr_number"),
     email: text().notNull(),
     phone: text().notNull(),
@@ -87,7 +87,7 @@ export const cases = pgTable(
     /** Litigation only. */
     opposingParty: text("opposing_party"),
     feeType: feeTypeEnum("fee_type").notNull().default("fixed"),
-    /** Whole SAR. Fixed: total fee. Hourly: rate per hour. Retainer: monthly amount. */
+    /** Whole AED. Fixed: total fee. Hourly: rate per hour. Retainer: monthly amount. */
     feeAmount: integer("fee_amount").notNull().default(0),
     openedAt: timestamp("opened_at", { withTimezone: true, mode: "string" }).notNull().defaultNow(),
     dueDate: date("due_date", { mode: "string" }),

@@ -38,7 +38,7 @@ export const caseFields = {
   feeType: z.enum(FEE_TYPES),
   feeAmount: z.coerce
     .number({ message: "Enter an amount" })
-    .int("Use whole riyals")
+    .int("Use whole dirhams")
     .min(0, "Fee cannot be negative")
     .max(100_000_000, "That amount is too large"),
 };

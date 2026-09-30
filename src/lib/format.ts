@@ -3,7 +3,7 @@
  * (not the viewer's or the server's), so server-rendered HTML and the client
  * render produce identical text: no hydration mismatches around midnight.
  */
-const FIRM_TIME_ZONE = "Asia/Riyadh";
+const FIRM_TIME_ZONE = "Asia/Dubai";
 
 const dateFmt = new Intl.DateTimeFormat("en-GB", {
   day: "numeric",
@@ -28,12 +28,12 @@ const plainDateFmt = new Intl.DateTimeFormat("en-GB", {
 });
 const currencyFmt = new Intl.NumberFormat("en-US", {
   style: "currency",
-  currency: "SAR",
+  currency: "AED",
   maximumFractionDigits: 0,
 });
 const compactCurrencyFmt = new Intl.NumberFormat("en-US", {
   style: "currency",
-  currency: "SAR",
+  currency: "AED",
   notation: "compact",
   maximumFractionDigits: 1,
 });

@@ -45,8 +45,15 @@ const LAST_NAMES = [
   "Khalil", "Rahman", "Al-Shammari", "Aziz", "Hamdan", "Al-Zahrani", "Sabbagh", "Darwish",
 ];
 const COMPANY_SUFFIXES = ["Holdings", "Trading Co.", "Group", "Logistics", "Real Estate", "Contracting", "Ventures", "Industries"];
-const CITIES = ["Riyadh", "Jeddah", "Dammam", "Mecca", "Medina", "Khobar", "Tabuk", "Abha"];
-const COURTS = ["General Court", "Commercial Court", "Labour Court", "Court of Appeal", "Personal Status Court"];
+const CITIES = ["Dubai", "Dubai", "Dubai", "Abu Dhabi", "Sharjah", "Ajman", "Ras Al Khaimah", "Al Ain"];
+const COURTS = [
+  "Dubai Court of First Instance",
+  "Dubai Court of Appeal",
+  "DIFC Courts",
+  "Abu Dhabi Judicial Department",
+  "Dubai Labour Court",
+  "Sharjah Federal Court",
+];
 
 const TITLE_TEMPLATES: Record<PracticeArea, string[]> = {
   corporate: ["Shareholder agreement review", "Company formation", "Merger due diligence", "Board governance advisory", "Joint venture structuring"],
@@ -118,9 +125,9 @@ async function main() {
       type: isCompany ? ("company" as const) : ("individual" as const),
       name,
       contactName: isCompany ? fullName() : null,
-      crNumber: isCompany ? faker.string.numeric(10) : null,
+      crNumber: isCompany ? `TL-${faker.string.numeric(6)}` : null, // trade licence
       email: `${slug}@example.com`,
-      phone: `+966 5${faker.string.numeric(1)} ${faker.string.numeric(3)} ${faker.string.numeric(4)}`,
+      phone: `+971 5${pick(["0", "2", "4", "5", "6", "8"])} ${faker.string.numeric(3)} ${faker.string.numeric(4)}`,
       city: pick(CITIES),
       createdAt: iso(faker.date.between({ from: subMonths(NOW, 16), to: subMonths(NOW, 1) })),
     };
@@ -168,7 +175,7 @@ async function main() {
         CASE_PRIORITIES.map((p, idx) => ({ value: p, weight: [3, 5, 3, 1][idx] })),
       ),
       assigneeId: faker.number.float() < 0.92 ? pick(lawyers).id : null,
-      courtName: practiceArea === "litigation" ? `${pick(CITIES)} ${pick(COURTS)}` : null,
+      courtName: practiceArea === "litigation" ? pick(COURTS) : null,
       opposingParty: practiceArea === "litigation" ? `${pick(LAST_NAMES).replace("Al-", "")} ${pick(COMPANY_SUFFIXES)}` : null,
       feeType,
       feeAmount,
