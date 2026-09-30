@@ -30,14 +30,19 @@ function errorResponse(error: unknown) {
     return NextResponse.json(body, { status: error.status });
   }
   if (error instanceof z.ZodError) {
-    const { formErrors, fieldErrors } = z.flattenError(error);
+    // Field errors are keyed by their dotted path ("matter.courtName"), so a
+    // nested form can put each server message under the right input.
+    const fields: Record<string, string[]> = {};
+    let formError: string | undefined;
+    for (const issue of error.issues) {
+      if (issue.path.length === 0) {
+        formError ??= issue.message; // object-level problem, e.g. an unknown key
+        continue;
+      }
+      (fields[issue.path.join(".")] ??= []).push(issue.message);
+    }
     const body: ApiErrorBody = {
-      error: {
-        code: "validation_error",
-        // Object-level problems (e.g. an unknown key) have no field; surface them in the message.
-        message: formErrors[0] ?? "Some fields are invalid",
-        fields: fieldErrors as Record<string, string[]>,
-      },
+      error: { code: "validation_error", message: formError ?? "Some fields are invalid", fields },
     };
     return NextResponse.json(body, { status: 400 });
   }

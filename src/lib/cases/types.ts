@@ -22,3 +22,6 @@ export type CaseListItem = {
 };
 
 export type Assignee = { id: number; name: string; title: string };
+
+/** Client choice in the New Case wizard. */
+export type ClientOption = { id: number; name: string; type: "individual" | "company"; city: string };
