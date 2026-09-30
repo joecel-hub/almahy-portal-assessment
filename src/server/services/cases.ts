@@ -7,7 +7,8 @@ import { CASE_PRIORITY_LABELS, CASE_STATUS_LABELS, type CaseStatus } from "@/lib
 import type { CaseListParams, CaseSortField } from "@/lib/cases/search-params";
 import type { Assignee, CaseListItem } from "@/lib/cases/types";
 import type { Paginated } from "@/lib/api/types";
-import type { CaseBulkInput, CaseUpdateInput } from "@/lib/validation/case";
+import { litigationCourtError, type CaseBulkInput, type CaseUpdateInput } from "@/lib/validation/case";
+import { ApiError } from "@/server/api/route";
 import type { Session } from "@/lib/auth/token";
 
 const assignee = alias(users, "assignee");
@@ -108,6 +109,13 @@ export async function updateCase(id: number, input: CaseUpdateInput, actor: Sess
   return db().transaction(async (tx) => {
     const [current] = await tx.select().from(cases).where(eq(cases.id, id)).for("update");
     if (!current) return null;
+
+    // Server-side business rule (the form checks it too, but can be bypassed).
+    const courtError = litigationCourtError(
+      current.practiceArea,
+      input.courtName !== undefined ? input.courtName : current.courtName,
+    );
+    if (courtError) throw new ApiError(400, "validation_error", courtError, { courtName: [courtError] });
 
     const patch: Partial<typeof cases.$inferInsert> = { ...input };
     if (input.status && input.status !== current.status) Object.assign(patch, statusPatch(input.status));

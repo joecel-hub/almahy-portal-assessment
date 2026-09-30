@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 import { and, desc, eq, ne } from "drizzle-orm";
 import { db } from "@/server/db";
 import { activities, cases, clients, consultations, documents, users } from "@/server/db/schema";
@@ -6,9 +7,12 @@ import type { CaseDetail } from "@/lib/cases/detail-types";
 
 /**
  * Loads a case and its related records. The case row is fetched first (to
- * 404 early); the five related lists are independent, so they run in parallel.
+ * 404 early); the four related lists are independent, so they run in parallel.
+ *
+ * `cache` dedupes calls within one request: generateMetadata and the page both
+ * ask for the case, but the database is queried once.
  */
-export async function getCaseDetail(id: number): Promise<CaseDetail | null> {
+export const getCaseDetail = cache(async function getCaseDetail(id: number): Promise<CaseDetail | null> {
   const [row] = await db()
     .select({
       case: cases,
@@ -102,4 +106,4 @@ export async function getCaseDetail(id: number): Promise<CaseDetail | null> {
     activity: activityRows,
     relatedCases,
   };
-}
+});

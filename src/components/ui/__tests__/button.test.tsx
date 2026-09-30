@@ -18,9 +18,9 @@ describe("Button", () => {
   it("renders its child element when asChild is set", () => {
     render(
       <Button asChild>
-        <a href="/cases">Cases</a>
+        <a href="#main">Skip to content</a>
       </Button>,
     );
-    expect(screen.getByRole("link", { name: "Cases" })).toHaveAttribute("href", "/cases");
+    expect(screen.getByRole("link", { name: "Skip to content" })).toHaveAttribute("href", "#main");
   });
 });
