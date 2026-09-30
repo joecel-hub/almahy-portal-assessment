@@ -116,7 +116,7 @@ async function main() {
   const lawyers = users.filter((u) => u.role !== "viewer");
 
   console.log("Seeding clients…");
-  const clientRows = Array.from({ length: 140 }, () => {
+  const clientRows = Array.from({ length: 180 }, () => {
     const isCompany = faker.number.float() < 0.45;
     const last = pick(LAST_NAMES);
     const name = isCompany ? `${last.replace("Al-", "")} ${pick(COMPANY_SUFFIXES)}` : fullName();
@@ -129,15 +129,15 @@ async function main() {
       email: `${slug}@example.com`,
       phone: `+971 5${pick(["0", "2", "4", "5", "6", "8"])} ${faker.string.numeric(3)} ${faker.string.numeric(4)}`,
       city: pick(CITIES),
-      createdAt: iso(faker.date.between({ from: subMonths(NOW, 16), to: subMonths(NOW, 1) })),
+      createdAt: iso(faker.date.between({ from: subMonths(NOW, 28), to: subMonths(NOW, 1) })),
     };
   });
   const clients = await db.insert(schema.clients).values(clientRows).returning();
 
   console.log("Seeding cases…");
-  const caseRows = Array.from({ length: 360 }, (_, i) => {
+  const caseRows = Array.from({ length: 540 }, (_, i) => {
     const practiceArea = pick(PRACTICE_AREAS);
-    const openedAt = faker.date.between({ from: subMonths(NOW, 14), to: NOW });
+    const openedAt = faker.date.between({ from: subMonths(NOW, 26), to: NOW });
     const ageDays = (NOW.getTime() - openedAt.getTime()) / 86_400_000;
     // Older cases are more likely to be closed, which makes the charts realistic.
     const status: CaseStatus =
