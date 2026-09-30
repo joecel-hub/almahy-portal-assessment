@@ -47,11 +47,11 @@ export default async function DocumentsPage({ searchParams }: PageProps<"/docume
             {
               header: "Document",
               cell: (d) => (
-                <div className="flex min-w-52 items-center gap-3">
+                <div className="flex items-center gap-3 sm:min-w-52">
                   <span className="flex size-8 shrink-0 items-center justify-center rounded-md bg-muted">
                     <FileText className="size-4 text-muted-foreground" aria-hidden="true" />
                   </span>
-                  <span className="truncate font-medium">{d.name}</span>
+                  <span className="font-medium break-all sm:break-normal">{d.name}</span>
                 </div>
               ),
             },

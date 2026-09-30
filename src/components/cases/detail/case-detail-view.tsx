@@ -184,19 +184,19 @@ export function CaseDetailView({ id, assignees }: { id: number; assignees: Assig
           <Card>
             <CardContent>
               <Tabs defaultValue="activity">
-                <TabsList aria-label="Case records">
-                  <TabsTrigger value="activity">
-                    <History className="size-4" aria-hidden="true" /> Activity
+                <TabsList aria-label="Case records" className="grid w-full grid-cols-3 sm:inline-flex sm:w-auto">
+                  <TabsTrigger value="activity" className="px-1 text-xs sm:px-3 sm:text-sm">
+                    <History className="hidden size-4 sm:block" aria-hidden="true" /> Activity
                   </TabsTrigger>
-                  <TabsTrigger value="documents">
-                    <FileText className="size-4" aria-hidden="true" /> Documents
-                    <Badge variant="secondary" className="px-1.5">
+                  <TabsTrigger value="documents" className="px-1 text-xs sm:px-3 sm:text-sm">
+                    <FileText className="hidden size-4 sm:block" aria-hidden="true" /> Documents
+                    <Badge variant="secondary" className="hidden px-1.5 sm:inline-flex">
                       {detail.documents.length}
                     </Badge>
                   </TabsTrigger>
-                  <TabsTrigger value="consultations">
-                    <CalendarClock className="size-4" aria-hidden="true" /> Consultations
-                    <Badge variant="secondary" className="px-1.5">
+                  <TabsTrigger value="consultations" className="px-1 text-xs sm:px-3 sm:text-sm">
+                    <CalendarClock className="hidden size-4 sm:block" aria-hidden="true" /> Consultations
+                    <Badge variant="secondary" className="hidden px-1.5 sm:inline-flex">
                       {detail.consultations.length}
                     </Badge>
                   </TabsTrigger>

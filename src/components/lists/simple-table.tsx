@@ -36,7 +36,7 @@ export function SimpleTable<T>({
               <th
                 key={c.header}
                 scope="col"
-                className={cn("px-4 py-3 text-left text-xs font-medium tracking-wide whitespace-nowrap text-muted-foreground uppercase", c.className)}
+                className={cn("px-3 py-3 text-left text-xs font-medium tracking-wide whitespace-nowrap text-muted-foreground uppercase sm:px-4", c.className)}
               >
                 {c.header}
               </th>
@@ -47,7 +47,7 @@ export function SimpleTable<T>({
           {rows.map((row) => (
             <tr key={rowKey(row)} className="border-b last:border-0 hover:bg-muted/40">
               {columns.map((c) => (
-                <td key={c.header} className={cn("px-4 py-3 align-middle", c.className)}>
+                <td key={c.header} className={cn("px-3 py-3 align-middle sm:px-4", c.className)}>
                   {c.cell(row)}
                 </td>
               ))}

@@ -219,7 +219,7 @@ async function main() {
       });
       activityRows.push({
         caseId: c.id, actorId: actor(), type: "document_added",
-        message: `Uploaded a ${kind} document`, createdAt: iso(at),
+        message: `Uploaded ${/^[aeiou]/.test(kind) ? "an" : "a"} ${kind} document`, createdAt: iso(at),
       });
     }
 

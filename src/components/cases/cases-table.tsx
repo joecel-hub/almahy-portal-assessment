@@ -114,7 +114,7 @@ export function CasesTable({ assignees }: { assignees: Assignee[] }) {
         header: "Case",
         sortKey: "ref",
         cell: (c) => (
-          <div className="min-w-44 sm:min-w-56">
+          <div className="min-w-0 sm:min-w-56">
             <Link
               href={`/cases/${c.id}`}
               className="font-medium hover:underline focus-visible:underline focus-visible:outline-none"
@@ -122,6 +122,10 @@ export function CasesTable({ assignees }: { assignees: Assignee[] }) {
               {c.title}
             </Link>
             <p className="font-mono text-xs text-muted-foreground">{c.ref}</p>
+            {/* Phones: status sits under the title instead of in its own column. */}
+            <div className="mt-1.5 sm:hidden">
+              <StatusBadge status={c.status} />
+            </div>
           </div>
         ),
       },
@@ -131,7 +135,13 @@ export function CasesTable({ assignees }: { assignees: Assignee[] }) {
         cell: (c) => <span className="whitespace-nowrap">{c.client.name}</span>,
         className: "hidden md:table-cell",
       },
-      { id: "status", header: "Status", sortKey: "status", cell: (c) => <StatusBadge status={c.status} /> },
+      {
+        id: "status",
+        header: "Status",
+        sortKey: "status",
+        cell: (c) => <StatusBadge status={c.status} />,
+        className: "hidden sm:table-cell",
+      },
       {
         id: "priority",
         header: "Priority",

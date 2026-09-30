@@ -82,11 +82,11 @@ export default async function SettingsPage() {
             <caption className="sr-only">Permissions by role</caption>
             <thead className="border-y bg-muted/40">
               <tr>
-                <th scope="col" className="px-5 py-3 text-left font-medium">
+                <th scope="col" className="px-3 py-3 text-left font-medium sm:px-5">
                   Permission
                 </th>
                 {ROLES.map((r) => (
-                  <th key={r} scope="col" className="px-5 py-3 text-center font-medium">
+                  <th key={r} scope="col" className="px-2 py-3 text-center text-xs font-medium sm:px-5 sm:text-sm">
                     {ROLE_LABELS[r]}
                     {r === session.role && <span className="block text-xs font-normal text-primary">(you)</span>}
                   </th>
@@ -96,11 +96,11 @@ export default async function SettingsPage() {
             <tbody>
               {PERMISSIONS.map((p) => (
                 <tr key={p} className="border-b last:border-0">
-                  <th scope="row" className="px-5 py-2.5 text-left font-normal">
+                  <th scope="row" className="px-3 py-2.5 text-left font-normal sm:px-5">
                     {PERMISSION_LABELS[p]}
                   </th>
                   {ROLES.map((r) => (
-                    <td key={r} className="px-5 py-2.5 text-center">
+                    <td key={r} className="px-2 py-2.5 text-center sm:px-5">
                       {can(r, p) ? (
                         <Check className="mx-auto size-4 text-success" aria-label="Allowed" />
                       ) : (

@@ -65,16 +65,19 @@ export default async function ConsultationsPage({ searchParams }: PageProps<"/co
           columns={[
             {
               header: "When",
-              cell: (c) => <span className="whitespace-nowrap font-medium tabular">{formatDateTime(c.scheduledAt)}</span>,
+              cell: (c) => <span className="font-medium tabular sm:whitespace-nowrap">{formatDateTime(c.scheduledAt)}</span>,
             },
             {
               header: "Client",
               cell: (c) => (
-                <div className="min-w-40">
+                <div className="sm:min-w-40">
                   <Link href={`/clients/${c.clientId}`} className="hover:underline">
                     {c.clientName}
                   </Link>
                   <p className="text-xs text-muted-foreground">{c.subject}</p>
+                  <p className="mt-1 text-xs text-muted-foreground sm:hidden">
+                    {CONSULTATION_STATUS_LABELS[c.status]} · {CONSULTATION_MODE_LABELS[c.mode]}
+                  </p>
                 </div>
               ),
             },
@@ -94,6 +97,7 @@ export default async function ConsultationsPage({ searchParams }: PageProps<"/co
             { header: "Mode", cell: (c) => CONSULTATION_MODE_LABELS[c.mode], className: "hidden sm:table-cell" },
             {
               header: "Status",
+              className: "hidden sm:table-cell",
               cell: (c) => (
                 <Badge variant={c.status === "scheduled" ? "info" : c.status === "completed" ? "success" : "secondary"}>
                   {CONSULTATION_STATUS_LABELS[c.status]}

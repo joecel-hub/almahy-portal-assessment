@@ -78,7 +78,7 @@ export function TrendChart({ data, bucket }: { data: TrendPoint[]; bucket: "week
       </ul>
       <div className="h-72">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data} margin={{ top: 8, right: 84, bottom: 0, left: -12 }}>
+          <LineChart data={data} margin={{ top: 20, right: 84, bottom: 0, left: -12 }}>
             <CartesianGrid vertical={false} stroke="var(--border)" />
             <XAxis dataKey="start" tickFormatter={format} minTickGap={24} {...AXIS} />
             <YAxis allowDecimals={false} width={40} {...AXIS} />
